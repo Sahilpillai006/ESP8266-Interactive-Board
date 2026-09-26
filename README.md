@@ -252,9 +252,11 @@ Adafruit SSD1306
 
 ## Demo
 
-Add a photo or video of the working project here.
-
-Example:
+<img width="2304" height="4096" alt="IMG20260926174221" src="https://github.com/user-attachments/assets/0e9a1780-362e-41d7-9ea6-5263b6dde8aa" />
+<img width="720" height="1280" alt="IMG_20260926_17450740" src="https://github.com/user-attachments/assets/1a287b42-6646-414c-8972-22e3ab6ccd2e" />
+<img width="720" height="1280" alt="IMG_20260926_17451815" src="https://github.com/user-attachments/assets/64eeab78-782c-42ef-bf86-38ff1e58db92" />
+<img width="720" height="1280" alt="IMG_20260926_17452143" src="https://github.com/user-attachments/assets/b5808287-ba2b-4688-a2e5-7257377e4bf8" />
+<img width="720" height="1280" alt="IMG_20260926_17452859" src="https://github.com/user-attachments/assets/3eeb860c-b1e2-4cb6-9fb8-a82df414f398" />
 
 ```markdown
 ![ESP8266 Interactive Board](media/interactive-board.jpg)
