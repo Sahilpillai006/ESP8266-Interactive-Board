@@ -17,6 +17,7 @@ The ESP8266 creates its own WiFi network and hosts a web interface. A phone or c
 - Adjustable brush size
 - Clear button
 - SSD1306 OLED display output
+- Automatic OLED update after each drawing stroke
 
 ## Hardware
 
@@ -76,59 +77,11 @@ The ESP8266 creates its own WiFi access point and hosts the drawing webpage.
 
 The user connects to the ESP8266 using a phone or computer and opens the web interface.
 
-The webpage contains a 128×64 drawing canvas that matches the resolution of the OLED.
+The webpage contains a **128×64 drawing canvas**, matching the resolution of the OLED.
 
-When something is drawn, the browser converts the canvas into monochrome pixel data and sends it to the ESP8266.
+When the user completes a drawing stroke, the browser converts the canvas into monochrome pixel data and sends it to the ESP8266.
 
-The ESP8266 processes the received data and displays the drawing on the OLED.
-
-## Getting Started
-
-### 1. Install the Required Libraries
-
-Install the following libraries using the Arduino IDE Library Manager:
-
-- Adafruit GFX Library
-- Adafruit SSD1306
-
-The project also uses the ESP8266 WiFi and web server libraries.
-
-### 2. Upload the Code
-
-Open the Arduino sketch:
-
-```text
-ESP8266_Interactive_Board.ino
-```
-
-Select the appropriate ESP8266 board and COM port in Arduino IDE.
-
-Upload the code to the ESP8266.
-
-### 3. Connect to the ESP8266
-
-After powering the ESP8266, connect your phone or computer to the WiFi network:
-
-```text
-SSID: ESP8266-Board
-Password: 12345678
-```
-
-### 4. Open the Web Interface
-
-Open a browser and enter:
-
-```text
-http://192.168.4.1
-```
-
-The interactive drawing board will appear.
-
-### 5. Start Drawing
-
-Use your finger on a touchscreen or a mouse on a computer to draw.
-
-The drawing will be displayed on the OLED.
+The ESP8266 processes the received data and updates the OLED display automatically.
 
 ## System Flow
 
@@ -151,13 +104,77 @@ ESP8266 serves drawing webpage
 User draws on canvas
       |
       v
-Browser converts drawing to pixel data
+Drawing stroke completed
+      |
+      v
+Browser converts canvas to pixel data
       |
       v
 Data sent to ESP8266
       |
       v
 ESP8266 updates OLED
+```
+
+## Getting Started
+
+### 1. Install Required Libraries
+
+Install the following libraries using the Arduino IDE Library Manager:
+
+- Adafruit GFX Library
+- Adafruit SSD1306
+
+The project also uses the ESP8266 WiFi, web server, and I²C libraries.
+
+### 2. Upload the Code
+
+Open the Arduino sketch:
+
+```text
+ESP8266_Interactive_Board.ino
+```
+
+Select the appropriate ESP8266 board and COM port in Arduino IDE.
+
+Upload the code to the ESP8266.
+
+### 3. Connect to the ESP8266
+
+After powering the ESP8266, connect your phone or computer to:
+
+```text
+SSID: ESP8266-Board
+Password: 12345678
+```
+
+### 4. Open the Web Interface
+
+Open a browser and enter:
+
+```text
+http://192.168.4.1
+```
+
+The interactive drawing board will appear.
+
+### 5. Start Drawing
+
+Use your finger on a touchscreen or a mouse on a computer to draw.
+
+After completing a stroke, the drawing is automatically sent to the ESP8266 and displayed on the OLED.
+
+## Project Structure
+
+```text
+ESP8266-Interactive-Board/
+│
+├── ESP8266_Interactive_Board/
+│   └── ESP8266_Interactive_Board.ino
+│
+├── README.md
+├── LICENSE
+└── .gitignore
 ```
 
 ## WiFi Configuration
@@ -172,17 +189,6 @@ IP Address: 192.168.4.1
 
 These settings can be changed in the Arduino code.
 
-## Project Structure
-
-```text
-ESP8266-Interactive-Board/
-│
-├── ESP8266_Interactive_Board.ino
-├── README.md
-├── LICENSE
-└── .gitignore
-```
-
 ## Current Status
 
 **Working Prototype**
@@ -191,41 +197,36 @@ The current version includes:
 
 - WiFi access point
 - Web server
-- Drawing webpage
+- Web-based drawing interface
 - Touchscreen drawing
 - Mouse drawing
 - Eraser
-- Brush size control
+- Adjustable brush size
 - Clear function
+- Automatic OLED updates
 - OLED display output
 - Web-to-ESP8266 communication
 
-## Limitations
+## Current Limitations
 
-The current implementation sends the complete 128×64 bitmap when the drawing is updated.
-
-```text
-128 × 64 = 8192 pixels
-```
-
-This works for the current prototype, but transmitting the complete bitmap is not the most efficient approach for smooth real-time drawing.
+- The OLED updates after the current drawing stroke is completed rather than continuously while the user is drawing.
+- The complete 128×64 pixel image is sent to the ESP8266 after each stroke.
+- Drawings are not stored permanently and are lost when the webpage is refreshed or the ESP8266 is restarted.
+- The OLED is limited to monochrome output with a resolution of 128×64 pixels.
+- The current interface is designed primarily for a single user and does not support collaborative drawing.
 
 ## Future Improvements
 
-- Real-time drawing updates
-- Send only changed pixels
-- Reduce network traffic
-- Smoother drawing
-- Improved touch handling
-- Multiple brush types
-- Better eraser functionality
-- Undo and redo
-- Save drawings
-- Load saved drawings
-- Lines, rectangles, and circles
-- Multiple drawing pages
-- Improved mobile interface
-- More efficient data transmission
+- Implement smoother real-time drawing on the OLED.
+- Optimize data transmission by sending only the pixels that have changed.
+- Add undo and redo functionality.
+- Add more brush sizes and drawing tools.
+- Add support for shapes such as lines, rectangles, and circles.
+- Add the ability to save and load drawings.
+- Improve the mobile interface and touch response.
+- Add multiple drawing pages or screens.
+- Explore larger displays for a bigger drawing area.
+- Add additional interactive features to make the board more useful as a standalone device.
 
 ## Technologies Used
 
@@ -252,23 +253,34 @@ Adafruit SSD1306
 
 ## Demo
 
-<img width="2304" height="4096" alt="IMG20260926174221" src="https://github.com/user-attachments/assets/0e9a1780-362e-41d7-9ea6-5263b6dde8aa" />
-<img width="720" height="1280" alt="IMG_20260926_17450740" src="https://github.com/user-attachments/assets/1a287b42-6646-414c-8972-22e3ab6ccd2e" />
-<img width="720" height="1280" alt="IMG_20260926_17451815" src="https://github.com/user-attachments/assets/64eeab78-782c-42ef-bf86-38ff1e58db92" />
-<img width="720" height="1280" alt="IMG_20260926_17452143" src="https://github.com/user-attachments/assets/b5808287-ba2b-4688-a2e5-7257377e4bf8" />
-<img width="720" height="1280" alt="IMG_20260926_17452859" src="https://github.com/user-attachments/assets/3eeb860c-b1e2-4cb6-9fb8-a82df414f398" />
+The following images show the working prototype, web interface, OLED output, and the overall setup.
 
-```markdown
-![ESP8266 Interactive Board](media/interactive-board.jpg)
-```
+### Prototype
 
-## 🧑‍💻 Author
+<img width="2304" height="4096" alt="Interactive Board Prototype" src="https://github.com/user-attachments/assets/0e9a1780-362e-41d7-9ea6-5263b6dde8aa" />
 
-**Sahil B Pillai**  
-Engineer | Robotics & AI Enthusiast  
+### Web Interface
 
----
+<img width="720" height="1280" alt="Interactive Board Web Interface" src="https://github.com/user-attachments/assets/1a287b42-6646-414c-8972-22e3ab6ccd2e" />
 
-## 📄 License
+### Drawing Interface
 
-This project is open-source and available under the MIT License.
+<img width="720" height="1280" alt="Interactive Drawing Interface" src="https://github.com/user-attachments/assets/64eeab78-782c-42ef-bf86-38ff1e58db92" />
+
+### OLED Output
+
+<img width="720" height="1280" alt="OLED Drawing Output" src="https://github.com/user-attachments/assets/b5808287-ba2b-4688-a2e5-7257377e4bf8" />
+
+### Working Demonstration
+
+<img width="720" height="1280" alt="Interactive Board Demonstration" src="https://github.com/user-attachments/assets/3eeb860c-b1e2-4cb6-9fb8-a82df414f398" />
+
+## License
+
+This project is licensed under the **MIT License**.
+
+## Author
+
+**Sahil B Pillai**
+
+Personal electronics and embedded systems project.
